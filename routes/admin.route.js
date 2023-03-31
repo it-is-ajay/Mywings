@@ -1,27 +1,30 @@
 import express from "express";
 import {body} from "express-validator";
-import {uploadPost,editProfile,viewUsers,viewAllPosts,deletePost,seeRequestForm,sendRequest,viewInterestedContestants,viewSelectedContestants} from "../controller/admin.controller.js"; 
+import {uploadPost,uploadPostSubmit,editProfile,viewUsers,viewAllPosts,deletePost,seeRequestForm,viewInterestedContestantsAccept,sendRequest,viewInterestedContestants,viewSelectedContestants, interestedContestants2} from "../controller/admin.controller.js"; 
 
 const router = express.Router();
 
 
-router.post("/uploadPost",uploadPost);
+router.get("/uploadPost",uploadPost);
+router.post("/uploadPost/submit",uploadPostSubmit)
 
 router.post("/editProfile",editProfile);
 
-router.post("/viewUsers",viewUsers);
+router.get("/viewUsers",viewUsers);
 
-router.post("/viewAllPosts",viewAllPosts);
+router.get("/viewAllPosts",viewAllPosts);
 
-router.post("/deletePost/:adminPostId",deletePost);
+router.get("/deletePost/:adminPostId",deletePost);
 
 router.post("/seeRequestForm",seeRequestForm);
 
 router.post("/sendRequest",sendRequest);
 
-router.post("/viewInterestedContestants",viewInterestedContestants);
+router.post("/interestedContestants",interestedContestants2);
 
-router.post("/viewSelectedContestants",viewSelectedContestants);
+router.get("/viewInterestedContestants",viewInterestedContestants);
+router.post("/viewInterestedContestants/accept",viewInterestedContestantsAccept);
+router.get("/viewSelectedContestants",viewSelectedContestants);
 
 
 export default router;

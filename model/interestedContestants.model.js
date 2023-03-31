@@ -8,6 +8,11 @@ const interestedContestants = sequelize.define("interestedContestants",{
         autoIncrement:true
     }
 });
-    
+  
+sequelize.sync().then(()=>{
+    console.log("interestedContestants table created...");
+}).catch(err=>{
+    console.log(err);
+});
 
 export default interestedContestants;
