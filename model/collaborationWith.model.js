@@ -7,7 +7,7 @@ const collaboration = sequelize.define("collaboration",{
 
 
 sequelize.sync().then(()=>{
-    console.log("categories table created...");
+    console.log("collaboration table created...");
 }).catch(err=>{
     console.log(err);
 });

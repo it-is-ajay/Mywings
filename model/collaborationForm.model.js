@@ -3,8 +3,7 @@ import sequelize from "./dbConfig.js";
 
 const collaborationForm = sequelize.define("collaborationForm",{
     BusinessFirmName :{
-        type:DataTypes.STRING,
-        allowNull:false
+        type:DataTypes.STRING
     },
     email :{
         type:DataTypes.STRING,
@@ -12,22 +11,21 @@ const collaborationForm = sequelize.define("collaborationForm",{
     },
     address:{
         type:DataTypes.STRING,
-        allowNull:false
+
     },
     contactPersonName:{
-        type:DataTypes.NUMBER
+        type:DataTypes.STRING
     },
     contact:{
-        type:DataTypes.NUMBER,
-        allowNull:false
+        type:DataTypes.STRING,
     },
     file:{
-        type:DataTypes.NUMBER 
+        type:DataTypes.STRING
     }
 
 });
 sequelize.sync().then(()=>{
-    console.log("categories table created...");
+    console.log("collaborationFormtable created...");
 }).catch(err=>{
     console.log(err);
 });
