@@ -10,19 +10,18 @@ const collaborationForm = sequelize.define("collaborationForm",{
         unique:true
     },
     address:{
-        type:DataTypes.STRING,
+        type:DataTypes.STRING
 
     },
     contactPersonName:{
         type:DataTypes.STRING
     },
     contact:{
-        type:DataTypes.STRING,
-    },
-    file:{
         type:DataTypes.STRING
     }
 
+},{
+    timestamps : false
 });
 sequelize.sync().then(()=>{
     console.log("collaborationFormtable created...");

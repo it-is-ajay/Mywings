@@ -1,17 +1,17 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../db/dbconfig.js";
+import sequelize from "./dbConfig.js";
 
 const User=sequelize.define("user",{
+    name :{
+        type : DataTypes.STRING
+    },
     userName:{
         type:DataTypes.STRING,
-               
+        unique : true
     },
     email:{
         type:DataTypes.STRING,
-        unique:true,
-        validate:{
-            isEmail :true
-        }     
+        unique:true  
                
     },
     password:{
@@ -35,8 +35,11 @@ const User=sequelize.define("user",{
     },
     status:{
         type:DataTypes.TINYINT,
+        defaultValue : false
     }
 
+},{
+    timestamps : false
 })
 sequelize.sync().then(result=>{
     console.log("sucess");

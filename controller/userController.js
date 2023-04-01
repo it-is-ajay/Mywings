@@ -1,12 +1,14 @@
 import { header, validationResult } from "express-validator";
-import User from "../userModel/userModel.js";
-import help from "../userModel/helpModel.js";
-import follow from "../userModel/followModel.js";
-import spam from "../userModel/spamModel.js";
+import { Op } from 'sequelize';
+import User from "../model/user.model.js";
+import help from "../model/helpModel.js";
+import follow from "../model/followModel.js";
+import spam from "../model/spamModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { request, response } from "express";
-import { where } from "sequelize";
+import collaboration from "../model/collaborationWith.model.js";
+import collaborationForm from "../model/collaborationForm.model.js";
 
 export const signIn = async(request, response, next) => {
      try{
@@ -43,6 +45,7 @@ export const signUp = async (request, response, next) => {
         let user = await User.create(request.body);
         return response.status(200).json({ user: user, status: true });
     } catch (err) {
+        console.log(err);
         return response.status(500).json({ result: "internal server errore", status: false })
     }
 }
@@ -50,7 +53,9 @@ export const signUp = async (request, response, next) => {
 export const signOut=async(request,response)=>{
     return response.status(200).json({messagge:"login out succesful",token:null,status:true});
 }
-export const follow=async(request,response)=>{
+
+
+export const following=async(request,response)=>{
     try{
         let follower=await follow.findOne({
             where:{
@@ -69,7 +74,7 @@ export const follow=async(request,response)=>{
         console.log(err);
     }
 }
-export const unfollow=async(request,response)=>{
+export const unfollowing=async(request,response)=>{
     try{
         let unfollow=await follow.findOne({
             where:{
@@ -94,7 +99,7 @@ export const unfollow=async(request,response)=>{
     }
 }
 
-export const help=async(request,response)=>{
+export const userHelp=async(request,response)=>{
     try{
         let help=await help.findOne({
             where:{
@@ -112,7 +117,7 @@ export const help=async(request,response)=>{
         console.log(err);
     }
 }
-export const spam=async(request,response)=>{
+export const userSpam=async(request,response)=>{
     try{
         let spam=await spam.findOne({
             where:{
@@ -132,3 +137,49 @@ export const spam=async(request,response)=>{
     }
 }
 
+export const serverProfileByKeyword = async (request,response)=>{
+    try{
+        return response.status(200).json({user: await User.findAll({
+            where:{
+                userName :{
+                    [Op.like]: "%"+request.params.keyword+"%"
+                }
+            }
+        }), status: true});
+    }catch(err){return response.status(500).json({error: "Internal Server Error", status: false});}        
+}
+
+export const searchByArt = async (request,response)=>{
+    try{
+        return response.status(200).json({aritst : await User.findAll({
+            where : {
+                art : request.params.art
+            }
+        })})
+    }catch(err){return response.status(500).json({error: "Internal server error" ,status : false})};
+    
+}
+
+export const searchById = async (request,response)=>{
+    try{
+        let user = await User.findByPk(request.params.userId);
+        if(user)
+            return response.status(200).json({user, status: true});
+        return response.status(400).json({message : "bad request...", status: true});
+    }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})};
+}
+
+export const uploadProfile = async (request,response)=>{
+    try{
+        return response.status(200).json({user : await User.update({profilePhoto: request.body.profilePhoto},{
+            where:{id: request.body.id}
+        }), status: true});
+    }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})}
+}
+
+export const collaborationDetails = async (request,response)=>{
+    try{
+        return response.status(200).json({user : await collaborationForm.create(request.body), status: true});
+    }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})}
+    
+}

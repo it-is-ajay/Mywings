@@ -1,9 +1,9 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../db/dbconfig.js";
+import sequelize from "./dbConfig.js";
 
 const spam=sequelize.define("spam",{
     id:{
-        type:DataTypes.int,
+        type:DataTypes.INTEGER,
         allownull:false,
         autoIncrement:true,
         primaryKey:true
