@@ -1,16 +1,15 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../db/dbconfig.js";
+import sequelize from "./dbConfig.js";
 
 const help=sequelize.define("help",{
     id:{
-        type:DataTypes.int,
-        allownull:false,
+        type:DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true
         
     },
     problem:{
-        type:DataTypes.varchar
+        type:DataTypes.STRING
     }
 
 })
