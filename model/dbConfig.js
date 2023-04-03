@@ -1,7 +1,7 @@
 import {Sequelize} from "sequelize";
 import mysql2 from "mysql2";
 
-const sequelize = new Sequelize("artist","root","1234",{
+const sequelize = new Sequelize("artist2","root","Sachin@8120",{
     host:"localhost",
     dialect:"mysql"
 })

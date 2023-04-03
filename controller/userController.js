@@ -54,7 +54,6 @@ export const signOut=async(request,response)=>{
     return response.status(200).json({messagge:"login out succesful",token:null,status:true});
 }
 
-
 export const following=async(request,response)=>{
     try{
         let follower=await follow.findOne({
@@ -183,3 +182,33 @@ export const collaborationDetails = async (request,response)=>{
     }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})}
     
 }
+
+//sachin controller data start...............
+
+export const editProfile = async (request,response,next)=>{
+    try {
+     let errors = validationResult(request);
+     if(!errors.isEmpty())
+         return response.status(400).json({error:"bad request",status:false});
+     User.update(request.body,{where:{id:request.body.id}});
+     return response.status(200).json({message:"data updated",status:true});
+    } catch (error) {
+     console.log(error);
+     return response.status(500).json({error:"internal server error"});
+    }
+ }
+ 
+ export const deleteAccount = async(request,response,next)=>{
+     // let userDetails = await User.findOne({where:{id:request.body.id}});
+     User.destroy({where:{id:request.body.id}})
+     .then((result)=>{return response.status(200).json({message:"user deleted",status:true});})
+     .catch((err)=>{return response.status(500).json({error:"internal server error",status:false})});
+     // return response.status(200).json({result:userDetails,status:true})
+ }
+ 
+ export const settingPage = (request,response,next)=>{
+     return response.status(200).json({message:"on setting page",status:true});
+ }
+ 
+
+//sachin controller data end.................
