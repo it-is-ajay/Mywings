@@ -17,14 +17,14 @@ const collaborationForm = sequelize.define("collaborationForm",{
         type:DataTypes.STRING
     },
     contact:{
-        type:DataTypes.STRING
+        type:DataTypes.STRING,
     }
-
 },{
-    timestamps : false
+    timestamps:false
+      
 });
 sequelize.sync().then(()=>{
-    console.log("collaborationFormtable created...");
+    console.log("collaborationForm table created...");
 }).catch(err=>{
     console.log(err);
 });

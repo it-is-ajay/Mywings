@@ -12,6 +12,8 @@ const help=sequelize.define("help",{
         type:DataTypes.STRING
     }
 
+},{
+    timestamps:false
 })
 sequelize.sync().then(result=>{
     console.log("sucess");

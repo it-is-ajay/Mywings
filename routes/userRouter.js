@@ -1,13 +1,18 @@
 import express from "express";
-import {signIn,signOut,signUp,serverProfileByKeyword,searchByArt, unfollowing, following, userHelp, searchById, uploadProfile, collaborationDetails} from "../controller/userController.js";
+import { body } from "express-validator";
+import {signIn,signOut,signUp,following,userHelp,unfollowing,collaborationDetails,userSpam,uploadProfile,searchById,searchByArt,serverProfileByKeyword} from "../controller/userController.js";
+
 const router=express.Router();
+
 router.post("/signIn",signIn);
 router.post("/signUp",signUp);
+
 router.get("/signOut",signOut);
 router.get("/signIn/help",userHelp);
-router.get("/follow/:userId/:friendId",following);
+router.get("/follower/:userId/:friendId",following);
+
 router.get("/unFollow",unfollowing);
-// router.get("/spam",spam);
+router.get("/spam",userSpam);
 
 
 //.....................

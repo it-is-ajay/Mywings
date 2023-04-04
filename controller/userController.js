@@ -1,14 +1,12 @@
-import { header, validationResult } from "express-validator";
-import { Op } from 'sequelize';
+import { validationResult } from "express-validator";
 import User from "../model/user.model.js";
-import help from "../model/helpModel.js";
-import follow from "../model/followModel.js";
+import help from "../model/help.model.js";
+import follow from "../model/follower.model.js";
 import spam from "../model/spamModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { request, response } from "express";
-import collaboration from "../model/collaborationWith.model.js";
-import collaborationForm from "../model/collaborationForm.model.js";
+import follower from "../model/follower.model.js";
+
 
 export const signIn = async(request, response, next) => {
      try{
@@ -27,9 +25,8 @@ export const signIn = async(request, response, next) => {
          return response.status(400).json({message:"invalid password",status:true})
         }
         return response.status(400).json({error:"invalid email",status:false});
-
-
      }catch(err){
+        console.log(err);
         return response.status(500).json({result:"internal server error",status:false});
      }
 }
@@ -51,13 +48,12 @@ export const signUp = async (request, response, next) => {
 }
 
 export const signOut=async(request,response)=>{
-    return response.status(200).json({messagge:"login out succesful",token:null,status:true});
+    return response.status(200).json({messagge:"log out succesful",token:null,status:true});
 }
-
 
 export const following=async(request,response)=>{
     try{
-        let follower=await follow.findOne({
+        let follower=await follower.findOne({
             where:{
                 userId:request.body.userId,
                 friendId:request.body.friendId
@@ -72,6 +68,8 @@ export const following=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
+
     }
 }
 export const unfollowing=async(request,response)=>{
@@ -96,6 +94,7 @@ export const unfollowing=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
     }
 }
 
@@ -115,6 +114,8 @@ export const userHelp=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
+
     }
 }
 export const userSpam=async(request,response)=>{
@@ -134,6 +135,7 @@ export const userSpam=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
     }
 }
 

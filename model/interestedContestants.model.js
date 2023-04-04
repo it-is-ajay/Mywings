@@ -6,7 +6,15 @@ const interestedContestants = sequelize.define("interestedContestants",{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
+    },
+    userId:{
+        type:DataTypes.INTEGER
+    },
+    adminPostId:{
+        type:DataTypes.INTEGER 
     }
+},{
+    timestamps:false
 });
   
 sequelize.sync().then(()=>{

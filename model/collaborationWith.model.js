@@ -3,6 +3,8 @@ import sequelize from "./dbConfig.js";
 
 const collaboration = sequelize.define("collaboration",{
     
+},{
+    timestamps:false
 });
 
 
