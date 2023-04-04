@@ -1,15 +1,9 @@
 import User from "../model/user.model.js";
-import sequelize from "sequelize";
 import interestedContestant from "../model/interestedContestants.model.js";
 import viewSelectedContestant from "../model/selectedContestants.model.js";
 import Admin from "../model/admin.model.js";
 import { adminPosts, collaborationForm } from "../model/association.js";
 
-const Op = sequelize.Op;
-
-export const uploadPost = (request, response, next) => {
-
-}
 
 export const uploadPostSubmit = async (request, response, next) => {
   try {
@@ -31,14 +25,7 @@ export const uploadPostSubmit = async (request, response, next) => {
 
 export const editProfile = async (request, response, next) => {
   try{
-  let admin = await Admin.update({
-    bio:request.body.bio,
-    profilePhoto:request.body.profilePhoto
-  },{
-    where:{
-      id:request.params.adminId
-    }
-  })
+  let admin = await Admin.update({bio:request.body.bio,profilePhoto:request.body.profilePhoto},{where:{id:request.params.adminId}})
   .then(result => { return result.dataValues });
     return response.status(200).json({ message: " Profile updated ... ", status: true })
 }catch(err){
@@ -100,15 +87,37 @@ export const viewInterestedContestants = async (request, response, next) => {
     return response.status(500).json({ error: "Internal Server Error", status: false });
   }
 }
+export const interestedContestants2 = async (request, response, next) => {
+  try {
+    let user = await User.findOne({ where: { id: request.body.userId } });
 
-export const intrestedPost = (request,response,next)=>{
-  Contestant.create(request.body)
-  .then(result=>{
-      return response.status(200).json({message:"intrested post are saved...",status:true});
-  })
-  .catch(err=>{
-      return response.status(500).json({error:"Internal server error",status:false});
-  })
+    if (user.dataValues.art == "NULL") {
+      console.log(user.dataValues.art)
+      return response.status(200).json({ message: "you are not an artist", status: true });
+    } else {
+      let interestedContestants = await interestedContestant.findOne({
+        where: {
+          userId: request.body.userId,
+          adminPostId: request.body.adminPostId
+        }
+      })
+      if (interestedContestants) {
+        return response.status(200).json({ message: "your interest already added.. ", status: true })
+      }
+      else {
+        await interestedContestant.create({
+          userId: request.body.userId,
+          adminPostId: request.body.adminPostId
+        }).then(result => { return result.dataValues });
+
+        return response.status(200).json({ message: "thank you ..", status: true })
+      }
+    }
+  }
+  catch (err) {
+    console.log(err);
+    return response.status(500).json({ error: "Internal Server Error", status: false });
+  }
 }
 
 export const viewInterestedContestantsAccept = async (request, response, next) => {

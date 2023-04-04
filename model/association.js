@@ -23,7 +23,4 @@ User.hasMany(selectedContestants,{foreignKey:"userId",targetKey:"id"});
 selectedContestants.belongsTo(User);
 
 
-
-
-
 export {User,adminPosts,interestedContestants,selectedContestants,collaborationForm,collaboration};

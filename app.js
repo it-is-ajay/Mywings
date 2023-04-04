@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from"body-parser";
-import userRoute from "./routes/userRouter.js"
+import userRoute from "./routes/user.route.js";
 import adminRouter from "./routes/admin.route.js";
 
 
@@ -15,7 +15,3 @@ app.use("/user",userRoute);
 app.listen(3000,()=>{
     console.log("server started...");
 });
-
-
-
-// http://localhost:3000/user/searchProfile/:keyword
