@@ -15,17 +15,20 @@ const adminPosts = sequelize.define("adminPosts",{
     caption :{
         type:DataTypes.STRING
     },
-    location:{
-        type:DataTypes.STRING
+    locationOfYour:{
+        type:DataTypes.STRING,
+        default:"INDORE"
     },
     date:{
         type:DataTypes.STRING
     }
 
+},{
+    timestamps:false
 })
 
 sequelize.sync().then(()=>{
-    console.log("categories table created...");
+    console.log("admin posts  table created...");
 }).catch(err=>{
     console.log(err);
 });

@@ -18,14 +18,12 @@ const collaborationForm = sequelize.define("collaborationForm",{
     },
     contact:{
         type:DataTypes.STRING,
-    },
-    file:{
-        type:DataTypes.STRING
     }
-
+},{
+    timestamps:false
 });
 sequelize.sync().then(()=>{
-    console.log("collaborationFormtable created...");
+    console.log("collaborationForm table created...");
 }).catch(err=>{
     console.log(err);
 });

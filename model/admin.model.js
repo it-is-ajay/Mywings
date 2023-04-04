@@ -1,10 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "./dbConfig.js";
 
-const User=sequelize.define("user",{
-    name:{
-        type:DataTypes.STRING,
-    },
+const Admin=sequelize.define("admin",{
     userName:{
         type:DataTypes.STRING,
         unique:true           
@@ -19,34 +16,21 @@ const User=sequelize.define("user",{
     password:{
         type:DataTypes.STRING,
     },
-
-    contact:{
-        type:DataTypes.STRING,
-    },
-    gender:{
-        type:DataTypes.STRING,
-    },
-    address:{
-        type:DataTypes.STRING,
-    },
-    art:{
+    bio:{
         type:DataTypes.STRING,
     },
     profilePhoto:{
         type:DataTypes.STRING,
-    },
-    status:{
-        type:DataTypes.TINYINT,
     }
-
+    
 },{
     timestamps:false
 })
 
 sequelize.sync().then(result=>{
-    console.log("user table created ");
+    console.log("Admin table created ");
 }).catch(err=>{
     console.log("errore");
 })
 
-export default User;
+export default Admin;

@@ -1,12 +1,13 @@
-import { header, validationResult } from "express-validator";
-import User from "../userModel/userModel.js";
-import help from "../userModel/helpModel.js";
-import follow from "../userModel/followModel.js";
-import spam from "../userModel/spamModel.js";
+import { validationResult } from "express-validator";
+import User from "../model/user.model.js";
+import help from "../model/helpModel.js"
+import follow from "../model/follower.model.js";
+import following from "../model/following.model.js";
+import spam from "../model/spamModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { request, response } from "express";
-import { where } from "sequelize";
+import follower from "../model/follower.model.js";
+
 
 export const signIn = async(request, response, next) => {
      try{
@@ -25,9 +26,8 @@ export const signIn = async(request, response, next) => {
          return response.status(400).json({message:"invalid password",status:true})
         }
         return response.status(400).json({error:"invalid email",status:false});
-
-
      }catch(err){
+        console.log(err);
         return response.status(500).json({result:"internal server error",status:false});
      }
 }
@@ -43,16 +43,18 @@ export const signUp = async (request, response, next) => {
         let user = await User.create(request.body);
         return response.status(200).json({ user: user, status: true });
     } catch (err) {
+        console.log(err);
         return response.status(500).json({ result: "internal server errore", status: false })
     }
 }
 
 export const signOut=async(request,response)=>{
-    return response.status(200).json({messagge:"login out succesful",token:null,status:true});
+    return response.status(200).json({messagge:"log out succesful",token:null,status:true});
 }
-export const follow=async(request,response)=>{
+
+export const following=async(request,response)=>{
     try{
-        let follower=await follow.findOne({
+        let follower=await follower.findOne({
             where:{
                 userId:request.body.userId,
                 friendId:request.body.friendId
@@ -67,6 +69,8 @@ export const follow=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
+
     }
 }
 export const unfollow=async(request,response)=>{
@@ -91,10 +95,11 @@ export const unfollow=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
     }
 }
 
-export const help=async(request,response)=>{
+export const userHelp=async(request,response)=>{
     try{
         let help=await help.findOne({
             where:{
@@ -110,9 +115,12 @@ export const help=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
+
     }
 }
-export const spam=async(request,response)=>{
+
+export const userSpam=async(request,response)=>{
     try{
         let spam=await spam.findOne({
             where:{
@@ -129,6 +137,7 @@ export const spam=async(request,response)=>{
 
     }catch(err){
         console.log(err);
+        return response.status(500).json({result:"internal server error",status:false});
     }
 }
 

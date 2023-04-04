@@ -13,6 +13,8 @@ const selectedContestants = sequelize.define("selectedContestant",{
     adminPostId:{
         type:DataTypes.INTEGER
     }
+},{
+    timestamps:false
 });
 
 sequelize.sync().then(()=>{
