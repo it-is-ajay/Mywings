@@ -37,6 +37,7 @@ const User=sequelize.define("user",{
     },
     status:{
         type:DataTypes.TINYINT,
+        defaultValue : false
     }
 
 },{

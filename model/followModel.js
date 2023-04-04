@@ -1,19 +1,14 @@
 import { DataTypes } from "sequelize";
 import sequelize from "./dbConfig.js";
 
-const help=sequelize.define("help",{
+const follow=sequelize.define("follow",{
     id:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true
         
-    },
-    problem:{
-        type:DataTypes.STRING
     }
 
-},{
-    timestamps:false
 })
 sequelize.sync().then(result=>{
     console.log("sucess");
@@ -21,4 +16,4 @@ sequelize.sync().then(result=>{
     console.log("errore");
 })
 
-export default help;
+export default follow;

@@ -1,8 +1,7 @@
 import { validationResult } from "express-validator";
 import User from "../model/user.model.js";
-import help from "../model/helpModel.js"
+import help from "../model/help.model.js";
 import follow from "../model/follower.model.js";
-import following from "../model/following.model.js";
 import spam from "../model/spamModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -73,7 +72,7 @@ export const following=async(request,response)=>{
 
     }
 }
-export const unfollow=async(request,response)=>{
+export const unfollowing=async(request,response)=>{
     try{
         let unfollow=await follow.findOne({
             where:{
@@ -119,7 +118,6 @@ export const userHelp=async(request,response)=>{
 
     }
 }
-
 export const userSpam=async(request,response)=>{
     try{
         let spam=await spam.findOne({
@@ -141,3 +139,49 @@ export const userSpam=async(request,response)=>{
     }
 }
 
+export const serverProfileByKeyword = async (request,response)=>{
+    try{
+        return response.status(200).json({user: await User.findAll({
+            where:{
+                userName :{
+                    [Op.like]: "%"+request.params.keyword+"%"
+                }
+            }
+        }), status: true});
+    }catch(err){return response.status(500).json({error: "Internal Server Error", status: false});}        
+}
+
+export const searchByArt = async (request,response)=>{
+    try{
+        return response.status(200).json({aritst : await User.findAll({
+            where : {
+                art : request.params.art
+            }
+        })})
+    }catch(err){return response.status(500).json({error: "Internal server error" ,status : false})};
+    
+}
+
+export const searchById = async (request,response)=>{
+    try{
+        let user = await User.findByPk(request.params.userId);
+        if(user)
+            return response.status(200).json({user, status: true});
+        return response.status(400).json({message : "bad request...", status: true});
+    }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})};
+}
+
+export const uploadProfile = async (request,response)=>{
+    try{
+        return response.status(200).json({user : await User.update({profilePhoto: request.body.profilePhoto},{
+            where:{id: request.body.id}
+        }), status: true});
+    }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})}
+}
+
+export const collaborationDetails = async (request,response)=>{
+    try{
+        return response.status(200).json({user : await collaborationForm.create(request.body), status: true});
+    }catch(err){return response.status(500).json({error : "Internal server error" ,status : false})}
+    
+}
