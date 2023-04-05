@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
-import User from "../model/user.model.js";
+// import User from "../model/user.model.js";
+import {User} from "../model/association.js"
 import help from "../model/help.model.js";
 import follower from "../model/follower.model.js";
 import spam from "../model/spamModel.js";
@@ -34,13 +35,15 @@ export const signIn = async (request, response, next) => {
 export const signUp = async (request, response, next) => {
     try {
         let error = await validationResult(request);
+        console.log(error);
         if (!error.isEmpty())
-            return response.status(400).json({ result: error.array() });
+            return response.status(400).json({ result1: error.array() });
         let saltyKey = await bcrypt.genSalt(10);
         let saltypassword = await bcrypt.hash(request.body.password, saltyKey);
         request.body.password = saltypassword;
         let user = await User.create(request.body);
-        return response.status(200).json({ user: user, status: true });
+        console.log(user);
+        return response.status(200).json({ result: user, status: true });
     } catch (err) {
         console.log(err);
         return response.status(500).json({ result: "internal server errore", status: false })
@@ -113,9 +116,6 @@ export const getAllFollowing = async (request, response) => {
     }
 }
 
-
-
-
 export const unfollowing = async (request, response) => {
     try {
         let unfollow = await following.findOne({where: {userId: request.body.userId,friendId: request.body.friendId}})
@@ -147,8 +147,6 @@ export const removeFollower = async (request, response) => {
         return response.status(500).json({ result: "internal server error", status: false });
     }
 }
-
-
 
 export const userHelp = async (request, response) => {
     try {
@@ -243,3 +241,27 @@ export const collaborationDetails = async (request, response) => {
     } catch (err) { return response.status(500).json({ error: "Internal server error", status: false }) }
 
 }
+
+//sachin controller data start...............
+
+export const editProfile = async (request,response,next)=>{
+    try {
+     User.update(request.body,{where:{id:request.body.id}});
+     return response.status(200).json({message:"data updated",status:true});
+    } catch (error) {
+     return response.status(500).json({error:"internal server error"});
+    }
+ }
+ 
+ export const deleteAccount = (request,response,next)=>{
+     User.destroy({where:{id:request.body.id}})
+     .then((result)=>{return response.status(200).json({message:"user deleted",status:true});})
+     .catch((err)=>{return response.status(500).json({error:"internal server error",status:false})});
+ }
+ 
+ export const settingPage = (request,response,next)=>{
+     return response.status(200).json({message:"on setting page",status:true});
+ }
+ 
+
+//sachin controller data end.................
