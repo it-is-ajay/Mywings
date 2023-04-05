@@ -1,6 +1,6 @@
 import express from "express";
 import { body } from "express-validator";
-import {signIn,signOut,signUp,removeFollower,userfollower,userfollowing,getAllFollowing,getAllFollower,userHelp,unfollowing,collaborationDetails,userSpam,uploadProfile,searchById,searchByArt,serverProfileByKeyword} from "../controller/user.controller.js";
+import {signIn,signOut,editProfile,deleteAccount,settingPage,signUp,removeFollower,userfollower,userfollowing,getAllFollowing,getAllFollower,userHelp,unfollowing,collaborationDetails,userSpam,uploadProfile,searchById,searchByArt,serverProfileByKeyword} from "../controller/user.controller.js";
 
 const router=express.Router();
 
@@ -36,5 +36,13 @@ router.get("/searchById/:userId",searchById);
 router.get("/searchProfile/viewProfile/:userId",searchById);
 router.post("/uploadProfile",uploadProfile);
 router.post("/collaborationDetails",collaborationDetails);
+
+//sachin router start.........
+
+router.post("/editProfile/updateDetails",editProfile);
+router.get("/editProfile/setting/deleteAccount",deleteAccount);
+router.get("/editProfile/setting",settingPage);
+
+//sachin router end...........
 
 export default router;
