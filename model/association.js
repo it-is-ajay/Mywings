@@ -10,7 +10,6 @@ import Like from "./like.model.js";
 import Save from "./save.model.js";
 import Post from "./post.model.js";
 
-//sachin router association's start...............
 User.hasMany(Post, { foreignKey: "userId" });
 Post.belongsTo(User, { foreignKey: "userId" });
 
@@ -31,9 +30,6 @@ Save.belongsTo(Post, { foreignKey: "postId", targetKey: "id" });
 
 User.hasMany(Save, { foreignKey: "userId", targetKey: "id" });
 Save.belongsTo(User, { foreignKey: "userId", targetKey: "id" });
-
-//sachin router association end...............
-
 
 Admin.hasMany(adminPosts,{foreignKey:"adminId",targetKey:"id"});
 adminPosts.belongsTo(Admin);
