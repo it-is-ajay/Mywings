@@ -189,7 +189,7 @@ export const userSpam = async (request, response) => {
     }
 }
 
-export const serverProfileByKeyword = async (request, response) => {
+export const searchProfileByKeyword = async (request, response) => {
     try {
         return response.status(200).json({
             user: await User.findAll({
@@ -230,8 +230,7 @@ export const uploadProfile = async (request, response) => {
         return response.status(200).json({
             user: await User.update({ profilePhoto: request.body.profilePhoto }, {
                 where: { id: request.body.id }
-            }), status: true
-        });
+            }), status: true});
     } catch (err) { return response.status(500).json({ error: "Internal server error", status: false }) }
 }
 
@@ -242,7 +241,6 @@ export const collaborationDetails = async (request, response) => {
 
 }
 
-//sachin controller data start...............
 
 export const editProfile = async (request,response,next)=>{
     try {
@@ -264,4 +262,59 @@ export const editProfile = async (request,response,next)=>{
  }
  
 
-//sachin controller data end.................
+ export const banUser = (request,response,next)=>{
+    User.update({
+            status:'true'
+    },{
+        where:{
+            id:request.params.userId
+        }
+    })
+    .then(result=>{
+        return response.status(200).json({message:"User banned",status:true});
+    })
+    .catch(err=>{
+        return response.status(400).json({error:"error" ,status:false});
+    });  
+}
+
+export const SaveUser =async (request,response,next)=>{
+    let data = request.body;
+   await User.create(data)
+   .then(result=>{
+    return response.status(200).json({message:"user saved",status:true})
+   })
+   .catch(err=>{
+    return response.status(500).json({error:"Internal server error",status:false});
+   })
+}
+
+export const unbanUser = (request,response,next)=>{
+    User.update({
+        status:'false'
+    },{
+        where:{
+            id:request.params.userId
+        }
+    })
+    .then(result=>{
+        return response.status(200).json({message:"user unbaned",status:true});
+    })
+    .catch(err=>{
+        return response.status(500).json({error:"Internal server error",status:false});
+    });
+}
+export const isArtist = (request,response,next)=>{
+    var user =  User.findByPk(request.body.userId);
+    console.log(user);
+ }
+
+ export const getAllBanUser = (request,response)=>{
+    User.findAll({
+        where:{
+            status:'true'
+        }
+    }).then(result=>{
+        return response.status(200).json({message:"users will find",status:true});
+    }).catch(err=>{return response.status(500).json({error:"Internal server error",status:false});})
+ }

@@ -157,3 +157,54 @@ export const viewSelectedContestants = async (request, response, next) => {
   }
 }
 
+export const signIn = async (request,response,next)=>{
+  let admin =  await Admin.findOne({
+      where : {
+          email : request.body.email
+      }
+  });
+  if(admin.adminValues.email == request.body.email && admin.adminValues.password == request.body.password)
+     {
+      let payload={subject:admin.email};                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+      let token=jwt.sign(payload,"addlffhdkfkdlf");
+      return response.status(200).json({message : "login succesfull...",status : true}); 
+     }
+  else
+  return response.status(400).json({message : "login failed",status : false});
+}
+
+export const saveAdminPost = (request,response,next)=>{
+  console.log(request.body);
+  AdminPost.create(request.body)
+  .then(result=>{
+      return response.status(200).json({message:"adminPost saved",status:true});
+  })
+  .catch(err=>{
+      return response.status(500).json({error:"Internal server errror"});
+  });
+}
+
+export const spamUser = (request,response,next)=>{
+  console.log(request.body);
+  SpamUser.create(request.body)
+  .then(result=>{
+      return response.status(200).json({message:"spam user done",status:true});
+  })
+  .catch(err=>{
+      return response.status(500).json({error:"Internal server error",status:false});
+  })
+}
+
+export const viewSpam = (request,response,next)=>{
+  console.log(request.body);
+  SpamUser.findAll(request.body)
+  .then(result=>{
+      return response.status(200).json({allSpamUser:result,status:true});
+  })
+  .catch(err=>{
+      return response.status(500).json({error:"Internal server error",status:false});
+  })
+}
+export const signOut = (request,response)=>{
+  return response.status(200).json({message:"loged out",token:null,status:true});
+}
